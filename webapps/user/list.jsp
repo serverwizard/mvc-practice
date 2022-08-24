@@ -13,8 +13,8 @@
     <thead>
     <tr>
         <th>#</th>
-        <th>userId</th>
-        <th>name</th>
+        <th>아이디</th>
+        <th>이름</th>
         <th></th>
     </tr>
     </thead>
