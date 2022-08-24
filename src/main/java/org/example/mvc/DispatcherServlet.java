@@ -44,7 +44,7 @@ public class DispatcherServlet extends HttpServlet {
         String requestURI = request.getRequestURI();
         RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
 
-        Object controller = handlerMappings.stream()
+        Object handler = handlerMappings.stream()
                 .filter(hm -> hm.findHandler(new HandlerKey(requestURI, requestMethod)) != null)
                 .map(hm -> hm.findHandler(new HandlerKey(requestURI, requestMethod)))
                 .findFirst()
@@ -52,11 +52,11 @@ public class DispatcherServlet extends HttpServlet {
 
         try {
             HandlerAdapter handlerAdapter = handlerAdapters.stream()
-                    .filter(ha -> ha.supports(controller))
+                    .filter(ha -> ha.supports(handler))
                     .findFirst()
-                    .orElseThrow(() -> new ServletException("No adapter for handler [" + controller + "]"));
+                    .orElseThrow(() -> new ServletException("No adapter for handler [" + handler + "]"));
 
-            ModelAndView modelAndView = handlerAdapter.handle(request, response, controller);
+            ModelAndView modelAndView = handlerAdapter.handle(request, response, handler);
 
             for (ViewResolver viewResolver : this.viewResolvers) {
                 View view = viewResolver.resolveViewName(modelAndView.getViewName());
